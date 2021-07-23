@@ -1,13 +1,14 @@
 package com.example.fragmentviewmodel.ui.main
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.fragmentviewmodel.R
-import java.util.HashMap
 
 class MainFragment : Fragment() {
 
@@ -22,24 +23,20 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         var myViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        var listDataChild: HashMap<String, List<String>>
-        myViewModel.getData()
-        myViewModel.getComments()
+        //var listItems: ArrayList<String>
+        myViewModel.InitData()
+        myViewModel.getNotes()
             .observe(viewLifecycleOwner, { map ->
                 print("Find comments change")
-                listDataChild = map
-
-                var adapter =
-                    CustomExpandableListAdapter(requireContext(), myViewModel.getNotes().value!!, listDataChild)
-                if (binding.myListView.getExpandableListAdapter() == null) {
-                    binding.myListView.setAdapter(adapter)
+                val adapter =
+                    ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, map)
+                var listView = view?.findViewById(R.id.myListView) as ListView
+                listView.adapter = adapter
+                if (listView.getAdapter() == null) {
+                    listView.setAdapter(adapter)
                 }
                 adapter.notifyDataSetChanged()
             })
-        binding.buttonSecond.setOnClickListener {
-            myViewModel.getData()
-            // findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-        }
 
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
@@ -47,7 +44,6 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
     }
 
 }
