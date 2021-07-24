@@ -8,6 +8,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Model {
 
@@ -31,7 +32,6 @@ class Model {
                 println("input:")
                 println(input)
                 return parseData(input)
-
             } else {
                 println("httpStatusCode:")
                 println(resp.status)
@@ -50,15 +50,7 @@ class Model {
         println("notesByte: ")
         println(notesByte)
         val notesStr = String(notesByte)
-        var notes = gson.fromJson(notesStr, Array<Note>::class.java).asList()
-        for (i in 0 until notes.size - 1) {
-            var id = "id:" + notes[i].id.toString()
-            var transactionDate = "transactionDate:" + notes[i].transactionDate.toString()
-            var summary = "summary: " + notes[i].summary
-            var debit = "debit:" + notes[i].debit
-            var credit = "debit:" + notes[i].credit
-        }
-        return notes
+        return gson.fromJson(notesStr,  Array<Note>::class.java).asList()
     }
 
 }
@@ -67,6 +59,6 @@ data class Note(
     val id: String,
     val transactionDate: String,
     val summary: String,
-    val debit: Int,
-    val credit: Int,
+    val debit: Float,
+    val credit: Float,
 )
