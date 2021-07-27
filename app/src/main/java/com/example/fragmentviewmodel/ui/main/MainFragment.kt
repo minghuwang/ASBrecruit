@@ -8,13 +8,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import com.example.fragmentviewmodel.R
 import com.example.fragmentviewmodel.model.Note
-import androidx.navigation.fragment.findNavController
 
 class MainFragment : Fragment() {
     companion object {
@@ -30,11 +28,15 @@ class MainFragment : Fragment() {
         var view = inflater.inflate(R.layout.main_fragment, container, false)
         myViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         myViewModel.InitData()
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var listItems = ArrayList<String>()
         var listView = view.findViewById(R.id.myListView) as ListView
 
         var bundle = Bundle()
-
         myViewModel.getNotes()
             .observe(viewLifecycleOwner, { listNotes: List<Note> ->
                 val adapter =
@@ -42,7 +44,7 @@ class MainFragment : Fragment() {
 
                 notes = listNotes
 
-                notes.forEach{
+                notes.forEach {
 //                    println(it.summary)
                     listItems.add(it.summary)
                 }
@@ -68,7 +70,6 @@ class MainFragment : Fragment() {
                         }
                     }
             })
-        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
