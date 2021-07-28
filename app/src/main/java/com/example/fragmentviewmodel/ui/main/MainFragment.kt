@@ -21,13 +21,16 @@ class MainFragment : Fragment() {
 
     private lateinit var myViewModel: MainViewModel
     private lateinit var notes: List<Note>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        myViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        myViewModel.InitData()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         var view = inflater.inflate(R.layout.main_fragment, container, false)
-        myViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        myViewModel.InitData()
 
         return view
     }
@@ -67,6 +70,7 @@ class MainFragment : Fragment() {
                         parentFragmentManager.commit {
                             setReorderingAllowed(true)
                             replace<DetailsFragment>(R.id.container, "Details", bundle)
+                            addToBackStack("First fragment")
                         }
                     }
             })

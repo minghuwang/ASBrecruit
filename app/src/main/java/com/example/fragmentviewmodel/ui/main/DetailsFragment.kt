@@ -8,9 +8,8 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import com.example.fragmentviewmodel.R
-import com.example.fragmentviewmodel.model.Note
 
-class DetailsFragment: Fragment(){
+class DetailsFragment : Fragment() {
     companion object {
         fun newInstance() = DetailsFragment()
     }
@@ -20,6 +19,11 @@ class DetailsFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View {
         var view = inflater.inflate(R.layout.details_fragment, container, false)
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var listView = view.findViewById(R.id.detailsListView) as ListView
         var bundle = arguments
         var id = bundle!!.getString("id")
@@ -29,13 +33,12 @@ class DetailsFragment: Fragment(){
         var debit = bundle!!.getString("debit")
         var list = ArrayList<String>()
         list.add("id: " + id!!)
-        list.add("transactionDate: " +transactionDate!!)
+        list.add("transactionDate: " + transactionDate!!)
         list.add("summary: " + summary!!)
         list.add("debit: " + debit!!)
         list.add("credit: " + credit!!)
         val adapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, list)
         listView.adapter = adapter
-        return view
     }
 }
