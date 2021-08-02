@@ -12,6 +12,9 @@ import kotlin.collections.ArrayList
 
 class Model {
 
+
+
+
     suspend fun HttpGetData(): List<Note> {
         var input: ByteArray
         var list: List<Note>

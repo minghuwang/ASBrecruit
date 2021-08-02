@@ -6,21 +6,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fragmentviewmodel.model.Model
 import com.example.fragmentviewmodel.model.Note
-import com.google.gson.Gson
+import com.example.fragmentviewmodel.utils.Utils
 import kotlinx.coroutines.launch
-import java.util.ArrayList
-
 
 
 class MainViewModel : ViewModel() {
     private val liveDataNotes = MutableLiveData<List<Note>>()
-
+    private val liveDataPresure = MutableLiveData<String>()
     fun InitData() {
         println("getData")
-        viewModelScope.launch {
-            var postModel = Model()
-            liveDataNotes.value = postModel.HttpGetData()
+        if (Utils.Pressure) {
+            liveDataPresure.value = "0"
+        } else {
+            viewModelScope.launch {
+                var postModel = Model()
+                liveDataNotes.value = postModel.HttpGetData()
+
+            }
         }
+    }
+
+    fun setPresure(s: String) {
+        liveDataPresure.value = s
+    }
+    fun getPresure(): LiveData<String>{
+        return liveDataPresure
     }
 
     fun getNotes(): LiveData<List<Note>> {
